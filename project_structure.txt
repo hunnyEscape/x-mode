@@ -1,10 +1,12 @@
 .
 ├── README.md
 ├── components
+│   ├── BackgroundAnimation.tsx
 │   ├── GameCard.tsx
 │   ├── ImageModal.tsx
 │   ├── InquiryModal.tsx
-│   └── ParticleBackground.tsx
+│   ├── ParticleBackground.tsx
+│   └── SimpleBackgroundAnimation.tsx
 ├── constants
 │   └── const.ts
 ├── eslint.config.mjs
@@ -29,4 +31,4 @@
 │       └── page.tsx
 └── tsconfig.json
 
-5 directories, 24 files
+5 directories, 26 files

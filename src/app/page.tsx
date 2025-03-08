@@ -6,19 +6,26 @@ import GameCard, { GameInfo } from '../../components/GameCard';
 import ImageModal from '../../components/ImageModal';
 import InquiryModal from "../../components/InquiryModal";
 import { TEXT_STYLES, gameInfos, games } from '../../constants/const';
-import BackgroundAnimation from '../../components/BackgroundAnimation';
 import ParticleBackground from '../../components/ParticleBackground';
-import SimpleBackgroundAnimation from '../../components/SimpleBackgroundAnimation';
+import Footer,{LegalModalType} from '../../components/Footer';
+import LegalModal from '../../components/LegalModal';
 export default function Home() {
 	const [selectedGame, setSelectedGame] = useState<GameInfo | null>(null);
 	const [modalOpen, setModalOpen] = useState(false);
 	const [inquiryModalOpen, setInquiryModalOpen] = useState(false);
+	const [legalModalOpen,setLegalModalOpen] = useState(false);
+	const [legalModalType,setLegalModalType] = useState<LegalModalType>('disclaimer');
 	const handleOpenModal = (game: GameInfo) => {
 		setSelectedGame(game);
 		setModalOpen(true);
 	};
+	const isLegalModalOpen = (legalModalType:LegalModalType) =>{
+		setLegalModalType(legalModalType);
+		setLegalModalOpen(true);
+	}
 	return (
 		<>
+			<LegalModal isOpen={legalModalOpen} onClose={()=>setLegalModalOpen(false)} type={legalModalType}/>
 			<ImageModal
 				game={selectedGame}
 				modalOpen={modalOpen}
@@ -46,10 +53,17 @@ export default function Home() {
 					<div className="relative flex w-1/2 h-[150vh] items-center justify-center text-center text-white bg-black">
 						<div className="text-left w-4/5">
 							<h1 className={TEXT_STYLES.sectionTitle}>選び抜かれたセットアップ<br />最高のパフォーマンスを。</h1>
-							<p className={TEXT_STYLES.subtitle}>マイク、カメラ、入力デバイス、PCを厳選し、配信に最適な環境を構築。乱雑なコードやデバイス配置も徹底的に整え、快適なプレイ環境を提供します。機材の性能だけでなく、スムーズな操作と美しい映像を実現するための細部にまでこだわります。</p>
+							<Image
+								src={`${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/desktop.webp`}
+								alt="desktop"
+								width={500}
+								height={300}
+								className="w-full rounded-lg"
+							/>
+							<p className={`${TEXT_STYLES.subtitle} mt-2`}>マイク、カメラ、入力デバイス、PCを厳選し、配信に最適な環境を構築。乱雑なコードやデバイス配置を整え快適なプレイ環境を提供します。機材の性能だけでなく、スムーズな操作と美しい映像を実現するための細部にまでこだわります。</p>
 						</div>
 					</div>
-					<div className="relative flex w-1/2 h-[100vh] bg-black"/>
+					<div className="relative flex w-1/2 h-[100vh] bg-black" />
 					<div className="relative flex w-full h-[180vh] items-center justify-center text-white bg-black">
 						<div className="text-left w-2/3">
 							<h1 className={TEXT_STYLES.sectionTitle}>拡張された世界に浸る体験</h1>
@@ -68,19 +82,26 @@ export default function Home() {
 							</div>
 						</div>
 					</div>
-					<div className="relative flex w-1/2 h-[100vh] items-center justify-left text-white bg-black ml-auto"/>
+					<div className="relative flex w-1/2 h-[100vh] items-center justify-left text-white bg-black ml-auto" />
 					<div className="relative flex w-1/2 h-[150vh] items-center justify-left text-white bg-black ml-auto">
 						<div>
 							<div className="text-left w-3/4">
 								<h1 className={TEXT_STYLES.sectionTitle}>
 									面倒な設定は不要
 								</h1>
-								<p className={TEXT_STYLES.subtitle}>
+								<p className={`${TEXT_STYLES.subtitle} mb-2`}>
 									専用のセットアップツールを搭載した機器を接続するだけで、すぐにゲーム配信を開始できます。
 								</p>
-								<li className={TEXT_STYLES.paragraph}>配信ソフト・ゲーム環境も最適化済み</li>
+								<Image
+									src={`${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/ssd.webp`}
+									alt="desktop"
+									width={500}
+									height={300}
+									className="w-full rounded-lg mb-2"
+								/>
+								<li className={TEXT_STYLES.paragraph}>配信ソフト・ゲーム環境に合わせてカスタマイズ</li>
 								<li className={TEXT_STYLES.paragraph}>アップデートの手間なし、いつでも安定動作</li>
-								<li className={TEXT_STYLES.paragraph}>動画編集・YouTubeアップロードまで一括サポート</li>
+								<li className={TEXT_STYLES.paragraph}>動画編集とYouTubeアップロードまで一括サポート</li>
 							</div>
 						</div>
 					</div>
@@ -90,7 +111,7 @@ export default function Home() {
 								<h2 className={TEXT_STYLES.sectionTitle}>
 									ゲーム環境の<br />立ち上げサービスの流れ
 								</h2>
-								<div className="space-y-8">
+								<div className="space-y-8 mt-5">
 									<article>
 										<h3 className={TEXT_STYLES.articleTitle}>1. お問い合わせ</h3>
 										<p className={TEXT_STYLES.paragraph}>まずはご連絡ください。</p>
@@ -113,7 +134,7 @@ export default function Home() {
 									</article>
 									<button
 										onClick={() => setInquiryModalOpen(true)}
-										className="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition cursor-pointer"
+										className="mt-3 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition cursor-pointer"
 									>
 										詳細を見る
 									</button>
@@ -121,6 +142,7 @@ export default function Home() {
 							</section>
 						</div>
 					</div>
+					<Footer onOpenLegalModal={(type)=>isLegalModalOpen(type)}/>
 				</main >
 			</div >
 		</>

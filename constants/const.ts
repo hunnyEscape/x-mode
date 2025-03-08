@@ -1,7 +1,7 @@
 import { GameInfo } from '../components/GameCard';
 export const TEXT_STYLES = {
 	title: "text-5xl font-extrabold mb-4",
-	sectionTitle: "text-6xl font-extrabold mb-2 text-blue-700 leading-[1.1]",
+	sectionTitle: "text-6xl font-extrabold mb-2 text-blue-600 leading-[1.1]",
 	subtitle: "text-xl ml-1 text-gray-500",
 	articleTitle: "text-xl ml-1 text-gray-300 font-bold",
 	paragraph: "text-xl ml-1 text-gray-500",

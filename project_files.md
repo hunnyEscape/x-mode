@@ -46,7 +46,9 @@ import GameCard, { GameInfo } from '../../components/GameCard';
 import ImageModal from '../../components/ImageModal';
 import InquiryModal from "../../components/InquiryModal";
 import { TEXT_STYLES, gameInfos, games } from '../../constants/const';
-
+import BackgroundAnimation from '../../components/BackgroundAnimation';
+import ParticleBackground from '../../components/ParticleBackground';
+import SimpleBackgroundAnimation from '../../components/SimpleBackgroundAnimation';
 export default function Home() {
 	const [selectedGame, setSelectedGame] = useState<GameInfo | null>(null);
 	const [modalOpen, setModalOpen] = useState(false);
@@ -70,31 +72,31 @@ export default function Home() {
 					content="専門のプロによるゲーミング＆配信環境構築サポート。快適なプレイ環境を実現します。"
 				/>
 			</Head>
+			<div className="z-[-1]">
+				<ParticleBackground />
+			</div>
 			<div className="bg-white text-gray-800 font-sans min-h-screen">
 				<main className="mx-full">
-					<div className="fixed top-0 left-0 h-screen w-full overflow-hidden bg-black">
-						<div className="absolute top-0 left-0 w-full h-full -z-10">
-							<Image
-								src={`${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/bg.webp`}
-								alt="背景画像"
-								fill
-								style={{ objectFit: "cover" }}
-								priority
-							/>
-						</div>
-					</div>
 					<div className="relative flex w-1/2 h-screen items-center justify-center text-center text-white bg-black">
-						<div className="text-left w-3/4">
+						<div className="text-left w-4/5">
 							<h1 className={TEXT_STYLES.sectionTitle}>加速する自由</h1>
 							<p className={TEXT_STYLES.subtitle}>垣根を超えてすべてが一つになる</p>
 						</div>
 					</div>
 					<div className="relative flex w-1/2 h-[150vh] items-center justify-center text-center text-white bg-black">
-						<div className="text-left w-3/4">
+						<div className="text-left w-4/5">
 							<h1 className={TEXT_STYLES.sectionTitle}>選び抜かれたセットアップ<br />最高のパフォーマンスを。</h1>
-							<p className={TEXT_STYLES.subtitle}>マイク、カメラ、入力デバイス、PCを厳選し、配信に最適な環境を構築。乱雑なコードやデバイス配置も徹底的に整え、快適なプレイ環境を提供します。機材の性能だけでなく、スムーズな操作と美しい映像を実現するための細部にまでこだわります。</p>
+							<Image
+								src={`${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/desktop.webp`}
+								alt="desktop"
+								width={500}
+								height={300}
+								className="w-full rounded-lg"
+							/>
+							<p className={`${TEXT_STYLES.subtitle} mt-2`}>マイク、カメラ、入力デバイス、PCを厳選し、配信に最適な環境を構築。乱雑なコードやデバイス配置を整え快適なプレイ環境を提供します。機材の性能だけでなく、スムーズな操作と美しい映像を実現するための細部にまでこだわります。</p>
 						</div>
 					</div>
+					<div className="relative flex w-1/2 h-[100vh] bg-black" />
 					<div className="relative flex w-full h-[180vh] items-center justify-center text-white bg-black">
 						<div className="text-left w-2/3">
 							<h1 className={TEXT_STYLES.sectionTitle}>拡張された世界に浸る体験</h1>
@@ -113,19 +115,26 @@ export default function Home() {
 							</div>
 						</div>
 					</div>
-
+					<div className="relative flex w-1/2 h-[100vh] items-center justify-left text-white bg-black ml-auto" />
 					<div className="relative flex w-1/2 h-[150vh] items-center justify-left text-white bg-black ml-auto">
 						<div>
 							<div className="text-left w-3/4">
 								<h1 className={TEXT_STYLES.sectionTitle}>
 									面倒な設定は不要
 								</h1>
-								<p className={TEXT_STYLES.subtitle}>
+								<p className={`${TEXT_STYLES.subtitle} mb-2`}>
 									専用のセットアップツールを搭載した機器を接続するだけで、すぐにゲーム配信を開始できます。
 								</p>
-								<li className={TEXT_STYLES.paragraph}>配信ソフト・ゲーム環境も最適化済み</li>
+								<Image
+									src={`${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/ssd.webp`}
+									alt="desktop"
+									width={500}
+									height={300}
+									className="w-full rounded-lg mb-2"
+								/>
+								<li className={TEXT_STYLES.paragraph}>配信ソフト・ゲーム環境に合わせてカスタマイズ</li>
 								<li className={TEXT_STYLES.paragraph}>アップデートの手間なし、いつでも安定動作</li>
-								<li className={TEXT_STYLES.paragraph}>動画編集・YouTubeアップロードまで一括サポート</li>
+								<li className={TEXT_STYLES.paragraph}>動画編集とYouTubeアップロードまで一括サポート</li>
 							</div>
 						</div>
 					</div>
@@ -135,7 +144,7 @@ export default function Home() {
 								<h2 className={TEXT_STYLES.sectionTitle}>
 									ゲーム環境の<br />立ち上げサービスの流れ
 								</h2>
-								<div className="space-y-8">
+								<div className="space-y-8 mt-5">
 									<article>
 										<h3 className={TEXT_STYLES.articleTitle}>1. お問い合わせ</h3>
 										<p className={TEXT_STYLES.paragraph}>まずはご連絡ください。</p>
@@ -158,7 +167,7 @@ export default function Home() {
 									</article>
 									<button
 										onClick={() => setInquiryModalOpen(true)}
-										className="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition cursor-pointer"
+										className="mt-3 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition cursor-pointer"
 									>
 										詳細を見る
 									</button>
@@ -299,142 +308,391 @@ export default InquiryModal;
 ### FILE: ./components/ParticleBackground.tsx
 
 "use client";
-import React, { useRef, useEffect, useState } from "react";
-import { Canvas, extend } from "@react-three/fiber";
-import { shaderMaterial } from "@react-three/drei";
-import * as THREE from "three";
+import React, { useEffect, useState, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
-
-// JSXで認識できるように型を拡張
-declare module '@react-three/fiber' {
-	interface ThreeElements {
-		particleMaterial: any;
-	}
+// GSAPプラグインを登録
+if (typeof window !== "undefined") {
+	gsap.registerPlugin(ScrollTrigger);
 }
 
-// カスタムシェーダーマテリアル
-const ParticleMaterial = shaderMaterial(
-	{ uScatter: 0, uTexture: new THREE.Texture() },
-	`
-    attribute vec3 initialPosition;
-    attribute vec3 randomOffset;
-    attribute vec2 uv;
-    varying vec2 vUv;
-    void main() {
-      vUv = uv;
-      vec3 newPosition = initialPosition + uScatter * randomOffset;
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
-      gl_PointSize = 2.0 + uScatter * 10.0;
-    }
-  `,
-	`
-    uniform sampler2D uTexture;
-    varying vec2 vUv;
-    void main() {
-      vec4 texColor = texture2D(uTexture, vUv);
-      if (texColor.a < 0.1) discard;
-      gl_FragColor = texColor;
-    }
-  `
-);
+// アニメーション設定パラメータ
+const ANIMATION_CONFIG = {
+	// パーティクル関連
+	PARTICLE_DENSITY: 4,         // パーティクルの密度 (大きいほど疎になる)
+	PARTICLE_SIZE: 3,            // パーティクルのサイズ
+	PARTICLE_SPREAD_X: 200,      // X方向の拡散範囲
+	PARTICLE_SPREAD_Y: 200,      // Y方向の拡散範囲
+	USE_ROUND_PARTICLES: false,  // 丸いパーティクルを使用するか
 
-extend({ ParticleMaterial });
+	// スクロールトリガー関連
+	SCRUB_FACTOR: 0.5,           // スクロールの滑らかさ (大きいほど滑らか)
 
-interface ParticlesProps {
-	materialRef: React.MutableRefObject<any>;
-	texture: THREE.Texture;
-}
+	// 散らばり開始・終了位置
+	START_SCATTER_VH: 2,      // 散らばり始めるスクロール位置 (vh単位)
+	MID_POINT_VH: 4.5,            // 最大散らばり位置 (vh単位)
+	END_SCATTER_VH: 7,          // 元に戻り終わる位置 (vh単位)
 
-const Particles: React.FC<ParticlesProps> = ({ materialRef, texture }) => {
-	const numX = 200;
-	const numY = 200;
-	const count = numX * numY;
-	const positions = new Float32Array(count * 3);
-	const initialPositions = new Float32Array(count * 3);
-	const randomOffsets = new Float32Array(count * 3);
-	const uvs = new Float32Array(count * 2);
+	// 進行度計算関連
+	SCATTER_POWER: 0.5,          // 散らばる速度のべき乗 (大きいほど加速が緩やか)
+	GATHER_POWER: 2.5,           // 戻る速度のべき乗 (大きいほど加速が緩やか)
 
-	let i = 0;
-	let j = 0;
-	for (let y = 0; y < numY; y++) {
-		for (let x = 0; x < numX; x++) {
-			const u = x / (numX - 1);
-			const v = y / (numY - 1);
-			const posX = (u - 0.5) * 20;
-			const posY = (v - 0.5) * 20;
-
-			positions[i] = posX;
-			positions[i + 1] = posY;
-			positions[i + 2] = 0;
-
-			initialPositions[i] = posX;
-			initialPositions[i + 1] = posY;
-			initialPositions[i + 2] = 0;
-
-			randomOffsets[i] = (Math.random() - 0.5) * 10;
-			randomOffsets[i + 1] = (Math.random() - 0.5) * 10;
-			randomOffsets[i + 2] = (Math.random() - 0.5) * 10;
-
-			uvs[j] = u;
-			uvs[j + 1] = v;
-			i += 3;
-			j += 2;
-		}
-	}
-
-	const geometry = new THREE.BufferGeometry();
-	geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-	geometry.setAttribute("initialPosition", new THREE.BufferAttribute(initialPositions, 3));
-	geometry.setAttribute("randomOffset", new THREE.BufferAttribute(randomOffsets, 3));
-	geometry.setAttribute("uv", new THREE.BufferAttribute(uvs, 2));
-
-	return (
-		<points geometry={geometry}>
-			<particleMaterial ref={materialRef} uScatter={0} uTexture={texture} />
-		</points>
-	);
+	// デバッグ
+	//SHOW_DEBUG: process.env.NODE_ENV === 'development',  // デバッグ情報を表示するか
+	SHOW_DEBUG: false,
 };
 
 const ParticleBackground: React.FC = () => {
-	const materialRef = useRef<any>(null);
-	const [texture, setTexture] = useState<THREE.Texture | null>(null);
+	const containerRef = useRef<HTMLDivElement>(null);
+	const canvasRef = useRef<HTMLCanvasElement>(null);
+	const [imageLoaded, setImageLoaded] = useState(false);
+	const [imageElement, setImageElement] = useState<HTMLImageElement | null>(null);
+	const particlesRef = useRef<Array<Particle>>([]);
+	const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
+	const [debugLog, setDebugLog] = useState<string[]>([]);
 
+	// デバッグログを追加
+	const addDebugLog = (message: string) => {
+		setDebugLog(prev => [...prev, message]);
+		console.log(message);
+	};
+
+	// パーティクルクラス
+	class Particle {
+		x: number;
+		y: number;
+		originX: number;
+		originY: number;
+		color: string;
+		size: number;
+		randomX: number;
+		randomY: number;
+
+		constructor(x: number, y: number, color: string, size: number) {
+			this.x = x;
+			this.y = y;
+			this.originX = x;
+			this.originY = y;
+			this.color = color;
+			this.size = size;
+			// 設定値を使用
+			this.randomX = Math.random() * ANIMATION_CONFIG.PARTICLE_SPREAD_X * 2 - ANIMATION_CONFIG.PARTICLE_SPREAD_X;
+			this.randomY = Math.random() * ANIMATION_CONFIG.PARTICLE_SPREAD_Y * 2 - ANIMATION_CONFIG.PARTICLE_SPREAD_Y;
+		}
+
+		draw(ctx: CanvasRenderingContext2D) {
+			ctx.fillStyle = this.color;
+
+			if (ANIMATION_CONFIG.USE_ROUND_PARTICLES) {
+				// 丸いパーティクル
+				ctx.beginPath();
+				ctx.arc(this.x, this.y, this.size / 2, 0, Math.PI * 2);
+				ctx.fill();
+			} else {
+				// 四角いパーティクル
+				ctx.fillRect(this.x, this.y, this.size, this.size);
+			}
+		}
+
+		update(progress: number) {
+			// progress: 0 = 原点, 1 = 完全に散らばった状態
+			this.x = this.originX + (this.randomX * progress);
+			this.y = this.originY + (this.randomY * progress);
+		}
+	}
+
+	// 画像のロード処理
 	useEffect(() => {
-		const loader = new THREE.TextureLoader();
-		loader.load(process.env.NEXT_PUBLIC_CLOUDFRONT_URL + "/bg.webp", (tex) => {
-			setTexture(tex);
-		});
+		if (typeof window === 'undefined') return;
+
+		// globalのHTMLImageElementを使用
+		const img = new window.Image();
+		img.crossOrigin = "anonymous";
+		img.src = `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/bg.webp`;
+
+		img.onload = () => {
+			addDebugLog(`画像がロードされました: ${img.width}x${img.height}`);
+			setImageElement(img);
+			setImageLoaded(true);
+		};
+
+		img.onerror = (e) => {
+			addDebugLog(`画像の読み込みに失敗しました: ${e}`);
+		};
 	}, []);
 
-	useEffect(() => {
-		ScrollTrigger.create({
-			trigger: document.body,
-			start: "top top",
-			end: "bottom bottom",
-			scrub: true,
-			onUpdate: (self) => {
-				if (materialRef.current) {
-					materialRef.current.uniforms.uScatter.value = self.progress * 10;
+	// 画像をパーティクルに変換する関数
+	const createParticlesFromImage = () => {
+		if (!canvasRef.current || !imageElement || !imageLoaded) {
+			addDebugLog('パーティクル生成の前提条件が満たされていません');
+			return;
+		}
+
+		addDebugLog('パーティクル生成を開始します');
+		const canvas = canvasRef.current;
+		const ctx = canvas.getContext('2d');
+		if (!ctx) {
+			addDebugLog('キャンバスコンテキストを取得できませんでした');
+			return;
+		}
+
+		// 一時的なキャンバスを作成して画像データを取得
+		const tempCanvas = document.createElement('canvas');
+		const tempCtx = tempCanvas.getContext('2d');
+		if (!tempCtx) {
+			addDebugLog('一時キャンバスコンテキストを取得できませんでした');
+			return;
+		}
+
+		// 画像のスケールを調整して画面内に収めるための計算
+		const windowAspect = window.innerWidth / window.innerHeight;
+		const imageAspect = imageElement.width / imageElement.height;
+
+		let drawWidth, drawHeight;
+		let offsetX = 0, offsetY = 0;
+
+		if (windowAspect > imageAspect) {
+			// ウィンドウの方が横長の場合、幅に合わせる
+			drawWidth = window.innerWidth;
+			drawHeight = drawWidth / imageAspect;
+			offsetY = (window.innerHeight - drawHeight) / 2;
+		} else {
+			// ウィンドウの方が縦長の場合、高さに合わせる
+			drawHeight = window.innerHeight;
+			drawWidth = drawHeight * imageAspect;
+			offsetX = (window.innerWidth - drawWidth) / 2;
+		}
+
+		// 一時キャンバスのサイズを設定
+		const scale = 0.5; // パフォーマンスのためにスケールダウン
+		tempCanvas.width = drawWidth * scale;
+		tempCanvas.height = drawHeight * scale;
+
+		// 画像を一時キャンバスに描画
+		tempCtx.drawImage(imageElement, 0, 0, tempCanvas.width, tempCanvas.height);
+
+		try {
+			// 画像データをピクセル単位で取得
+			const imageData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
+			const data = imageData.data;
+
+			// 設定からパーティクルの密度を使用
+			const density = ANIMATION_CONFIG.PARTICLE_DENSITY;
+
+			// パーティクルを作成
+			particlesRef.current = [];
+			for (let y = 0; y < tempCanvas.height; y += density) {
+				for (let x = 0; x < tempCanvas.width; x += density) {
+					const index = (y * tempCanvas.width + x) * 4;
+					// アルファ値が一定以上の場合のみパーティクルを作成
+					if (data[index + 3] > 128) {
+						const r = data[index];
+						const g = data[index + 1];
+						const b = data[index + 2];
+						const color = `rgb(${r},${g},${b})`;
+
+						// キャンバス上の正しい位置に配置
+						const screenX = (x / scale) + offsetX;
+						const screenY = (y / scale) + offsetY;
+
+						const particle = new Particle(
+							screenX,
+							screenY,
+							color,
+							density * (ANIMATION_CONFIG.PARTICLE_SIZE / 2)
+						);
+
+						particlesRef.current.push(particle);
+					}
 				}
-			},
+			}
+
+			addDebugLog(`${particlesRef.current.length}個のパーティクルを生成しました`);
+		} catch (error) {
+			addDebugLog(`画像データの処理中にエラーが発生しました: ${error}`);
+		}
+	};
+
+	// アニメーションを描画
+	const animate = (progress: number) => {
+		if (!canvasRef.current) return;
+
+		const canvas = canvasRef.current;
+		const ctx = canvas.getContext('2d');
+		if (!ctx) return;
+
+		// キャンバスをクリア
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+		// 進行度が0の場合（画像表示の状態）は、パーティクルではなく元の画像を描画
+		if (progress === 0 && imageElement) {
+			// 画像のスケールを調整して画面内に収めるための計算
+			const windowAspect = window.innerWidth / window.innerHeight;
+			const imageAspect = imageElement.width / imageElement.height;
+
+			let drawWidth, drawHeight;
+			let offsetX = 0, offsetY = 0;
+
+			if (windowAspect > imageAspect) {
+				// ウィンドウの方が横長の場合、幅に合わせる
+				drawWidth = window.innerWidth;
+				drawHeight = drawWidth / imageAspect;
+				offsetY = (window.innerHeight - drawHeight) / 2;
+			} else {
+				// ウィンドウの方が縦長の場合、高さに合わせる
+				drawHeight = window.innerHeight;
+				drawWidth = drawHeight * imageAspect;
+				offsetX = (window.innerWidth - drawWidth) / 2;
+			}
+
+			// 元の画像を描画
+			ctx.drawImage(imageElement, offsetX, offsetY, drawWidth, drawHeight);
+			return;
+		}
+
+		// パーティクルを更新して描画
+		particlesRef.current.forEach(particle => {
+			particle.update(progress);
+			particle.draw(ctx);
 		});
+	};
+
+	// ウィンドウサイズ変更時の処理
+	useEffect(() => {
+		const handleResize = () => {
+			if (!containerRef.current) return;
+
+			const width = window.innerWidth;
+			const height = window.innerHeight;
+
+			setCanvasSize({ width, height });
+			addDebugLog(`キャンバスサイズを変更: ${width}x${height}`);
+
+			// サイズ変更後にアニメーションを更新（粒子が0の場合は進行度0で元画像を表示）
+			if (particlesRef.current.length === 0) {
+				animate(0);
+			}
+		};
+
+		handleResize();
+		window.addEventListener('resize', handleResize);
+
+		return () => {
+			window.removeEventListener('resize', handleResize);
+		};
 	}, []);
+
+	// キャンバスサイズが変更されたら、パーティクルを再生成
+	useEffect(() => {
+		if (canvasSize.width > 0 && canvasSize.height > 0 && imageLoaded && imageElement) {
+			createParticlesFromImage();
+		}
+	}, [canvasSize, imageLoaded, imageElement]);
+
+	// スクロールアニメーションを設定
+	useEffect(() => {
+		if (typeof window === 'undefined' || !particlesRef.current.length) {
+			addDebugLog('スクロールアニメーション設定の前提条件が満たされていません');
+			return;
+		}
+
+		addDebugLog('スクロールアニメーションを設定します');
+
+		// 初期状態（進行度0）を描画
+		animate(0);
+
+		// スクロールトリガーを設定
+		const tl = gsap.timeline({
+			scrollTrigger: {
+				trigger: 'body',
+				start: 'top top',
+				end: 'bottom bottom',
+				scrub: ANIMATION_CONFIG.SCRUB_FACTOR, // 設定値を使用
+				onUpdate: (self) => {
+					let progress = 0;
+
+					// スクロール位置に基づいて進行度を計算
+					const scrollPos = self.progress * document.body.scrollHeight;
+
+					// 設定からVH値を取得
+					const start = window.innerHeight * ANIMATION_CONFIG.START_SCATTER_VH;
+					const mid = window.innerHeight * ANIMATION_CONFIG.MID_POINT_VH;
+					const end = window.innerHeight * ANIMATION_CONFIG.END_SCATTER_VH;
+
+					if (scrollPos < start) {
+						// 開始位置より前: 進行度0（画像のまま）
+						progress = 0;
+					} else if (scrollPos > end) {
+						// 終了位置より後: 進行度0（画像に戻る）
+						progress = 0;
+					} else if (scrollPos < mid) {
+						// 開始から中間まで: 散らばる
+						// 設定からべき乗値を使用
+						progress = Math.pow((scrollPos - start) / (mid - start), ANIMATION_CONFIG.SCATTER_POWER);
+					} else {
+						// 中間から終了まで: 元に戻る
+						// 設定からべき乗値を使用
+						progress = 1 - Math.pow((scrollPos - mid) / (end - mid), ANIMATION_CONFIG.GATHER_POWER);
+					}
+
+					// パーティクルアニメーションを更新
+					animate(progress);
+				}
+			}
+		});
+
+		return () => {
+			// クリーンアップ
+			if (tl.scrollTrigger) {
+				tl.scrollTrigger.kill();
+			}
+		};
+	}, [particlesRef.current.length]);
 
 	return (
-		<div className="fixed inset-0 pointer-events-none">
-			<Canvas camera={{ position: [0, 0, 30] }}>
-				<ambientLight intensity={0.5} />
-				{texture && <Particles materialRef={materialRef} texture={texture} />}
-			</Canvas>
+		<div ref={containerRef} className="fixed top-0 left-0 w-full h-full bg-black pointer-events-none z-0">
+			<canvas
+				ref={canvasRef}
+				width={canvasSize.width}
+				height={canvasSize.height}
+				style={{
+					position: 'absolute',
+					top: 0,
+					left: 0,
+					width: '100%',
+					height: '100%',
+					background: 'transparent',
+				}}
+			/>
+			{ANIMATION_CONFIG.SHOW_DEBUG && (
+				<div style={{
+					position: 'fixed',
+					bottom: 10,
+					left: 10,
+					backgroundColor: 'rgba(0,0,0,0.7)',
+					color: 'white',
+					padding: '10px',
+					fontSize: '12px',
+					zIndex: 9999,
+					maxHeight: '200px',
+					overflowY: 'auto',
+					maxWidth: '80%',
+					pointerEvents: 'auto'
+				}}>
+					<h4>デバッグログ:</h4>
+					<ul>
+						{debugLog.map((log, i) => (
+							<li key={i}>{log}</li>
+						))}
+					</ul>
+				</div>
+			)}
 		</div>
 	);
 };
 
-export default ParticleBackground;
--e 
+export default ParticleBackground;-e 
 ### FILE: ./components/GameCard.tsx
 
 import Image from "next/image";
@@ -470,6 +728,97 @@ const GameCard: React.FC<GameCardProps> = ({ title, description, imageUrl, onCli
 
 export default GameCard;
 -e 
+### FILE: ./components/BackgroundAnimation.tsx
+
+"use client";
+import React, { useRef, useEffect, useState } from "react";
+import * as THREE from "three";
+import { Canvas, useFrame, useLoader } from "@react-three/fiber";
+
+// 背景シーンコンポーネント
+const BackgroundScene = () => {
+	const texture = useLoader(THREE.TextureLoader, `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/bg.webp`);
+	const meshRef = useRef<THREE.Mesh>(null);
+
+	useEffect(() => {
+		if (texture) {
+			texture.minFilter = THREE.LinearFilter;
+			texture.magFilter = THREE.LinearFilter;
+			texture.needsUpdate = true;
+		}
+	}, [texture]);
+
+	// 画面サイズに完全に合わせる
+	useEffect(() => {
+		if (!meshRef.current) return;
+
+		const resize = () => {
+			const camera = meshRef.current?.parent?.parent?.children.find(
+				child => child instanceof THREE.Camera
+			) as THREE.PerspectiveCamera;
+
+			if (!camera) return;
+
+			// カメラの視錐台の寸法を計算
+			const distance = camera.position.z;
+			const fov = THREE.MathUtils.degToRad(camera.fov);
+			const height = 2 * Math.tan(fov / 2) * distance;
+			const width = height * (window.innerWidth / window.innerHeight);
+
+			// メッシュのサイズをカメラの視野に合わせる
+			if (meshRef.current) {
+				meshRef.current.scale.set(width, height, 1);
+			}
+		};
+
+		resize();
+		window.addEventListener('resize', resize);
+		return () => window.removeEventListener('resize', resize);
+	}, []);
+
+	return (
+		<mesh ref={meshRef} position={[0, 0, 0]}>
+			<planeGeometry args={[1, 1]} />
+			<meshBasicMaterial map={texture} transparent={true} />
+		</mesh>
+	);
+};
+
+// メインコンポーネント
+const BackgroundAnimation: React.FC = () => {
+	const [mounted, setMounted] = useState(false);
+
+	// クライアントサイドでのみレンダリング
+	useEffect(() => {
+		setMounted(true);
+	}, []);
+
+	if (!mounted) return null;
+
+	return (
+		<div style={{
+			position: 'fixed',
+			top: 0,
+			left: 0,
+			width: '100%',
+			height: '100%',
+			zIndex: 10,
+			pointerEvents: 'none',
+			overflow: 'hidden'
+		}}>
+			<Canvas
+				camera={{ position: [0, 0, 5], fov: 60 }}
+				style={{ width: '100%', height: '100%' }}
+				gl={{ antialias: true, alpha: true }}
+			>
+				<ambientLight intensity={1} />
+				<BackgroundScene />
+			</Canvas>
+		</div>
+	);
+};
+
+export default BackgroundAnimation;-e 
 ### FILE: ./components/ImageModal.tsx
 
 "use client";
@@ -579,6 +928,29 @@ const ImageModal: React.FC<ImageModalProps> = ({ game, modalOpen, onClose }) => 
 
 export default ImageModal;
 -e 
+### FILE: ./components/SimpleBackgroundAnimation.tsx
+
+"use client";
+import React from "react";
+import Image from "next/image";
+
+const SimpleBackgroundAnimation: React.FC = () => {
+	return (
+		<div className="fixed top-0 left-0 w-full h-full z-10 pointer-events-none">
+			<div className="relative w-full h-full">
+				<Image
+					src={`${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/bg.webp`}
+					alt="Background"
+					fill
+					style={{ objectFit: "cover" }}
+					priority
+				/>
+			</div>
+		</div>
+	);
+};
+
+export default SimpleBackgroundAnimation;-e 
 ### FILE: ./next-env.d.ts
 
 /// <reference types="next" />
