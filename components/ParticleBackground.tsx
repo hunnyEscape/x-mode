@@ -101,10 +101,32 @@ const ParticleBackground: React.FC = () => {
 			return;
 		}
 
-		// 画像サイズを設定
-		tempCanvas.width = imageElement.width;
-		tempCanvas.height = imageElement.height;
-		tempCtx.drawImage(imageElement, 0, 0);
+		// 画像のスケールを調整して画面内に収めるための計算
+		const windowAspect = window.innerWidth / window.innerHeight;
+		const imageAspect = imageElement.width / imageElement.height;
+
+		let drawWidth, drawHeight;
+		let offsetX = 0, offsetY = 0;
+
+		if (windowAspect > imageAspect) {
+			// ウィンドウの方が横長の場合、幅に合わせる
+			drawWidth = window.innerWidth;
+			drawHeight = drawWidth / imageAspect;
+			offsetY = (window.innerHeight - drawHeight) / 2;
+		} else {
+			// ウィンドウの方が縦長の場合、高さに合わせる
+			drawHeight = window.innerHeight;
+			drawWidth = drawHeight * imageAspect;
+			offsetX = (window.innerWidth - drawWidth) / 2;
+		}
+
+		// 一時キャンバスのサイズを設定
+		const scale = 0.5; // パフォーマンスのためにスケールダウン
+		tempCanvas.width = drawWidth * scale;
+		tempCanvas.height = drawHeight * scale;
+
+		// 画像を一時キャンバスに描画
+		tempCtx.drawImage(imageElement, 0, 0, tempCanvas.width, tempCanvas.height);
 
 		try {
 			// 画像データをピクセル単位で取得
@@ -112,7 +134,7 @@ const ParticleBackground: React.FC = () => {
 			const data = imageData.data;
 
 			// パーティクルの密度を調整（パフォーマンス向上のため）
-			const density = 8; // 数値が大きいほど疎になる
+			const density = 4; // 数値が大きいほど疎になる
 
 			// パーティクルを作成
 			particlesRef.current = [];
@@ -126,13 +148,13 @@ const ParticleBackground: React.FC = () => {
 						const b = data[index + 2];
 						const color = `rgb(${r},${g},${b})`;
 
-						// キャンバスの中央に配置するための調整
-						const centerOffsetX = (canvas.width - tempCanvas.width) / 2;
-						const centerOffsetY = (canvas.height - tempCanvas.height) / 2;
+						// キャンバス上の正しい位置に配置
+						const screenX = (x / scale) + offsetX;
+						const screenY = (y / scale) + offsetY;
 
 						const particle = new Particle(
-							x + centerOffsetX,
-							y + centerOffsetY,
+							screenX,
+							screenY,
 							color,
 							density
 						);
@@ -159,6 +181,32 @@ const ParticleBackground: React.FC = () => {
 		// キャンバスをクリア
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+		// 進行度が0の場合（画像表示の状態）は、パーティクルではなく元の画像を描画
+		if (progress === 0 && imageElement) {
+			// 画像のスケールを調整して画面内に収めるための計算
+			const windowAspect = window.innerWidth / window.innerHeight;
+			const imageAspect = imageElement.width / imageElement.height;
+
+			let drawWidth, drawHeight;
+			let offsetX = 0, offsetY = 0;
+
+			if (windowAspect > imageAspect) {
+				// ウィンドウの方が横長の場合、幅に合わせる
+				drawWidth = window.innerWidth;
+				drawHeight = drawWidth / imageAspect;
+				offsetY = (window.innerHeight - drawHeight) / 2;
+			} else {
+				// ウィンドウの方が縦長の場合、高さに合わせる
+				drawHeight = window.innerHeight;
+				drawWidth = drawHeight * imageAspect;
+				offsetX = (window.innerWidth - drawWidth) / 2;
+			}
+
+			// 元の画像を描画
+			ctx.drawImage(imageElement, offsetX, offsetY, drawWidth, drawHeight);
+			return;
+		}
+
 		// パーティクルを更新して描画
 		particlesRef.current.forEach(particle => {
 			particle.update(progress);
@@ -176,6 +224,11 @@ const ParticleBackground: React.FC = () => {
 
 			setCanvasSize({ width, height });
 			addDebugLog(`キャンバスサイズを変更: ${width}x${height}`);
+
+			// サイズ変更後にアニメーションを更新（粒子が0の場合は進行度0で元画像を表示）
+			if (particlesRef.current.length === 0) {
+				animate(0);
+			}
 		};
 
 		handleResize();
