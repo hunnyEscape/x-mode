@@ -12,25 +12,26 @@ if (typeof window !== "undefined") {
 const ANIMATION_CONFIG = {
 	// パーティクル関連
 	PARTICLE_DENSITY: 4,         // パーティクルの密度 (大きいほど疎になる)
-	PARTICLE_SIZE: 2,            // パーティクルのサイズ
-	PARTICLE_SPREAD_X: 300,      // X方向の拡散範囲
-	PARTICLE_SPREAD_Y: 300,      // Y方向の拡散範囲
+	PARTICLE_SIZE: 3,            // パーティクルのサイズ
+	PARTICLE_SPREAD_X: 200,      // X方向の拡散範囲
+	PARTICLE_SPREAD_Y: 200,      // Y方向の拡散範囲
 	USE_ROUND_PARTICLES: false,  // 丸いパーティクルを使用するか
 
 	// スクロールトリガー関連
 	SCRUB_FACTOR: 0.5,           // スクロールの滑らかさ (大きいほど滑らか)
 
 	// 散らばり開始・終了位置
-	START_SCATTER_VH: 1.5,      // 散らばり始めるスクロール位置 (vh単位)
-	MID_POINT_VH: 4.25,            // 最大散らばり位置 (vh単位)
+	START_SCATTER_VH: 2,      // 散らばり始めるスクロール位置 (vh単位)
+	MID_POINT_VH: 4.5,            // 最大散らばり位置 (vh単位)
 	END_SCATTER_VH: 7,          // 元に戻り終わる位置 (vh単位)
 
 	// 進行度計算関連
-	SCATTER_POWER: 1.5,          // 散らばる速度のべき乗 (大きいほど加速が緩やか)
-	GATHER_POWER: 1.5,           // 戻る速度のべき乗 (大きいほど加速が緩やか)
+	SCATTER_POWER: 0.5,          // 散らばる速度のべき乗 (大きいほど加速が緩やか)
+	GATHER_POWER: 2.5,           // 戻る速度のべき乗 (大きいほど加速が緩やか)
 
 	// デバッグ
-	SHOW_DEBUG: process.env.NODE_ENV === 'development'  // デバッグ情報を表示するか
+	//SHOW_DEBUG: process.env.NODE_ENV === 'development',  // デバッグ情報を表示するか
+	SHOW_DEBUG: false,
 };
 
 const ParticleBackground: React.FC = () => {
