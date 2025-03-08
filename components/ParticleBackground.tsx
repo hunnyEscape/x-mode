@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
-// Next/imageは使わないのでインポートを削除
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -8,6 +7,31 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 if (typeof window !== "undefined") {
 	gsap.registerPlugin(ScrollTrigger);
 }
+
+// アニメーション設定パラメータ
+const ANIMATION_CONFIG = {
+	// パーティクル関連
+	PARTICLE_DENSITY: 4,         // パーティクルの密度 (大きいほど疎になる)
+	PARTICLE_SIZE: 2,            // パーティクルのサイズ
+	PARTICLE_SPREAD_X: 300,      // X方向の拡散範囲
+	PARTICLE_SPREAD_Y: 300,      // Y方向の拡散範囲
+	USE_ROUND_PARTICLES: false,  // 丸いパーティクルを使用するか
+
+	// スクロールトリガー関連
+	SCRUB_FACTOR: 0.5,           // スクロールの滑らかさ (大きいほど滑らか)
+
+	// 散らばり開始・終了位置
+	START_SCATTER_VH: 1.5,      // 散らばり始めるスクロール位置 (vh単位)
+	MID_POINT_VH: 4.25,            // 最大散らばり位置 (vh単位)
+	END_SCATTER_VH: 7,          // 元に戻り終わる位置 (vh単位)
+
+	// 進行度計算関連
+	SCATTER_POWER: 1.5,          // 散らばる速度のべき乗 (大きいほど加速が緩やか)
+	GATHER_POWER: 1.5,           // 戻る速度のべき乗 (大きいほど加速が緩やか)
+
+	// デバッグ
+	SHOW_DEBUG: process.env.NODE_ENV === 'development'  // デバッグ情報を表示するか
+};
 
 const ParticleBackground: React.FC = () => {
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -42,13 +66,23 @@ const ParticleBackground: React.FC = () => {
 			this.originY = y;
 			this.color = color;
 			this.size = size;
-			this.randomX = Math.random() * 1000 - 500;
-			this.randomY = Math.random() * 1000 - 500;
+			// 設定値を使用
+			this.randomX = Math.random() * ANIMATION_CONFIG.PARTICLE_SPREAD_X * 2 - ANIMATION_CONFIG.PARTICLE_SPREAD_X;
+			this.randomY = Math.random() * ANIMATION_CONFIG.PARTICLE_SPREAD_Y * 2 - ANIMATION_CONFIG.PARTICLE_SPREAD_Y;
 		}
 
 		draw(ctx: CanvasRenderingContext2D) {
 			ctx.fillStyle = this.color;
-			ctx.fillRect(this.x, this.y, this.size, this.size);
+
+			if (ANIMATION_CONFIG.USE_ROUND_PARTICLES) {
+				// 丸いパーティクル
+				ctx.beginPath();
+				ctx.arc(this.x, this.y, this.size / 2, 0, Math.PI * 2);
+				ctx.fill();
+			} else {
+				// 四角いパーティクル
+				ctx.fillRect(this.x, this.y, this.size, this.size);
+			}
 		}
 
 		update(progress: number) {
@@ -133,8 +167,8 @@ const ParticleBackground: React.FC = () => {
 			const imageData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
 			const data = imageData.data;
 
-			// パーティクルの密度を調整（パフォーマンス向上のため）
-			const density = 4; // 数値が大きいほど疎になる
+			// 設定からパーティクルの密度を使用
+			const density = ANIMATION_CONFIG.PARTICLE_DENSITY;
 
 			// パーティクルを作成
 			particlesRef.current = [];
@@ -156,7 +190,7 @@ const ParticleBackground: React.FC = () => {
 							screenX,
 							screenY,
 							color,
-							density
+							density * (ANIMATION_CONFIG.PARTICLE_SIZE / 2)
 						);
 
 						particlesRef.current.push(particle);
@@ -264,33 +298,32 @@ const ParticleBackground: React.FC = () => {
 				trigger: 'body',
 				start: 'top top',
 				end: 'bottom bottom',
-				scrub: true,
+				scrub: ANIMATION_CONFIG.SCRUB_FACTOR, // 設定値を使用
 				onUpdate: (self) => {
 					let progress = 0;
 
-					// 200vh（画面の2倍の高さ）で散らばり始め、400vh（画面の4倍の高さ）で元に戻る
-					if (self.progress * document.body.scrollHeight < window.innerHeight * 2) {
-						// 0-200vh: 進行度0（画像のまま）
-						progress = 0;
-					} else if (self.progress * document.body.scrollHeight > window.innerHeight * 4) {
-						// 400vh以降: 進行度0（画像に戻る）
-						progress = 0;
-					} else {
-						// 200vh-400vh: 徐々に散らばって元に戻る
-						// 200vh-300vh: 0→1（散らばる）
-						// 300vh-400vh: 1→0（戻る）
-						const scrollPos = self.progress * document.body.scrollHeight;
-						const start = window.innerHeight * 2; // 200vh
-						const mid = window.innerHeight * 3;   // 300vh
-						const end = window.innerHeight * 4;   // 400vh
+					// スクロール位置に基づいて進行度を計算
+					const scrollPos = self.progress * document.body.scrollHeight;
 
-						if (scrollPos < mid) {
-							// 散らばる
-							progress = (scrollPos - start) / (mid - start);
-						} else {
-							// 元に戻る
-							progress = 1 - (scrollPos - mid) / (end - mid);
-						}
+					// 設定からVH値を取得
+					const start = window.innerHeight * ANIMATION_CONFIG.START_SCATTER_VH;
+					const mid = window.innerHeight * ANIMATION_CONFIG.MID_POINT_VH;
+					const end = window.innerHeight * ANIMATION_CONFIG.END_SCATTER_VH;
+
+					if (scrollPos < start) {
+						// 開始位置より前: 進行度0（画像のまま）
+						progress = 0;
+					} else if (scrollPos > end) {
+						// 終了位置より後: 進行度0（画像に戻る）
+						progress = 0;
+					} else if (scrollPos < mid) {
+						// 開始から中間まで: 散らばる
+						// 設定からべき乗値を使用
+						progress = Math.pow((scrollPos - start) / (mid - start), ANIMATION_CONFIG.SCATTER_POWER);
+					} else {
+						// 中間から終了まで: 元に戻る
+						// 設定からべき乗値を使用
+						progress = 1 - Math.pow((scrollPos - mid) / (end - mid), ANIMATION_CONFIG.GATHER_POWER);
 					}
 
 					// パーティクルアニメーションを更新
@@ -308,8 +341,7 @@ const ParticleBackground: React.FC = () => {
 	}, [particlesRef.current.length]);
 
 	return (
-		<div ref={containerRef} className="fixed top-0 left-0 w-full h-full pointer-events-none z-20">
-			{/* キャンバス要素 - パーティクルアニメーション用 */}
+		<div ref={containerRef} className="fixed top-0 left-0 w-full h-full bg-black pointer-events-none z-0">
 			<canvas
 				ref={canvasRef}
 				width={canvasSize.width}
@@ -320,12 +352,10 @@ const ParticleBackground: React.FC = () => {
 					left: 0,
 					width: '100%',
 					height: '100%',
-					background: 'transparent'
+					background: 'transparent',
 				}}
 			/>
-
-			{/* デバッグ情報 - 開発時のみ表示 */}
-			{process.env.NODE_ENV === 'development' && (
+			{ANIMATION_CONFIG.SHOW_DEBUG && (
 				<div style={{
 					position: 'fixed',
 					bottom: 10,

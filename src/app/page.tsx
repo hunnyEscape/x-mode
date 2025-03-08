@@ -32,21 +32,24 @@ export default function Home() {
 					content="専門のプロによるゲーミング＆配信環境構築サポート。快適なプレイ環境を実現します。"
 				/>
 			</Head>
-			<ParticleBackground/>
+			<div className="z-[-1]">
+				<ParticleBackground />
+			</div>
 			<div className="bg-white text-gray-800 font-sans min-h-screen">
 				<main className="mx-full">
 					<div className="relative flex w-1/2 h-screen items-center justify-center text-center text-white bg-black">
-						<div className="text-left w-3/4">
+						<div className="text-left w-4/5">
 							<h1 className={TEXT_STYLES.sectionTitle}>加速する自由</h1>
 							<p className={TEXT_STYLES.subtitle}>垣根を超えてすべてが一つになる</p>
 						</div>
 					</div>
 					<div className="relative flex w-1/2 h-[150vh] items-center justify-center text-center text-white bg-black">
-						<div className="text-left w-3/4">
+						<div className="text-left w-4/5">
 							<h1 className={TEXT_STYLES.sectionTitle}>選び抜かれたセットアップ<br />最高のパフォーマンスを。</h1>
 							<p className={TEXT_STYLES.subtitle}>マイク、カメラ、入力デバイス、PCを厳選し、配信に最適な環境を構築。乱雑なコードやデバイス配置も徹底的に整え、快適なプレイ環境を提供します。機材の性能だけでなく、スムーズな操作と美しい映像を実現するための細部にまでこだわります。</p>
 						</div>
 					</div>
+					<div className="relative flex w-1/2 h-[100vh] bg-black"/>
 					<div className="relative flex w-full h-[180vh] items-center justify-center text-white bg-black">
 						<div className="text-left w-2/3">
 							<h1 className={TEXT_STYLES.sectionTitle}>拡張された世界に浸る体験</h1>
@@ -65,7 +68,7 @@ export default function Home() {
 							</div>
 						</div>
 					</div>
-
+					<div className="relative flex w-1/2 h-[100vh] items-center justify-left text-white bg-black ml-auto"/>
 					<div className="relative flex w-1/2 h-[150vh] items-center justify-left text-white bg-black ml-auto">
 						<div>
 							<div className="text-left w-3/4">
