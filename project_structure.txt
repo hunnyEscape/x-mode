@@ -2,9 +2,11 @@
 ├── README.md
 ├── components
 │   ├── BackgroundAnimation.tsx
+│   ├── Footer.tsx
 │   ├── GameCard.tsx
 │   ├── ImageModal.tsx
 │   ├── InquiryModal.tsx
+│   ├── LegalModal.tsx
 │   ├── ParticleBackground.tsx
 │   └── SimpleBackgroundAnimation.tsx
 ├── constants
@@ -31,4 +33,4 @@
 │       └── page.tsx
 └── tsconfig.json
 
-5 directories, 26 files
+5 directories, 28 files
