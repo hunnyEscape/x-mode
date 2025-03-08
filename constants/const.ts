@@ -74,21 +74,21 @@ export const games = [
 	{
 		title: "Counter-Strike 2",
 		description: "最も競技性の高いタイトル",
-		imageUrl: "/c1.png",
+		imageUrl:`${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/c1.webp`,
 	},
 	{
 		title: "Microsoft Flight Simulator",
 		description: "究極のフライトシム",
-		imageUrl: "/m1.png",
+		imageUrl:`${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/m1.webp`,
 	},
 	{
 		title: "Fortnite",
 		description: "史上最大のプレイヤー数を誇るバトルロイヤル",
-		imageUrl: "/f1.png",
+		imageUrl:`${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/f1.webp`,
 	},
 	{
 		title: "Gran Turismo 7",
 		description: "プロが認めるリアルドライビングシム",
-		imageUrl: "/g1.png",
+		imageUrl: `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/g1.webp`,
 	},
 ];
