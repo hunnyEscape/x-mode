@@ -1,0 +1,52 @@
+.
+├── README.md
+├── components
+│   ├── GameCard.tsx
+│   ├── HeroSection.tsx
+│   ├── ImageModal.tsx
+│   └── InquiryModal.tsx
+├── constants
+│   └── const.ts
+├── eslint.config.mjs
+├── next-env.d.ts
+├── next.config.ts
+├── package-lock.json
+├── package.json
+├── postcss.config.mjs
+├── project_files.md
+├── project_structure.txt
+├── public
+│   ├── 1.jpg
+│   ├── 1.png
+│   ├── 2.jpg
+│   ├── 3.jpg
+│   ├── c1.png
+│   ├── c2.png
+│   ├── c3.png
+│   ├── c4.png
+│   ├── f1.png
+│   ├── f2.png
+│   ├── f3.png
+│   ├── f4.png
+│   ├── file.svg
+│   ├── g1.png
+│   ├── g2.png
+│   ├── g3.png
+│   ├── g4.png
+│   ├── globe.svg
+│   ├── m1.png
+│   ├── m2.png
+│   ├── m3.png
+│   ├── m4.png
+│   ├── next.svg
+│   ├── vercel.svg
+│   └── window.svg
+├── src
+│   └── app
+│       ├── favicon.ico
+│       ├── globals.css
+│       ├── layout.tsx
+│       └── page.tsx
+└── tsconfig.json
+
+5 directories, 44 files
