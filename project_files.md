@@ -296,6 +296,145 @@ const InquiryModal: React.FC<InquiryModalProps> = ({ isOpen, onClose }) => {
 
 export default InquiryModal;
 -e 
+### FILE: ./components/ParticleBackground.tsx
+
+"use client";
+import React, { useRef, useEffect, useState } from "react";
+import { Canvas, extend } from "@react-three/fiber";
+import { shaderMaterial } from "@react-three/drei";
+import * as THREE from "three";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
+// JSXで認識できるように型を拡張
+declare module '@react-three/fiber' {
+	interface ThreeElements {
+		particleMaterial: any;
+	}
+}
+
+// カスタムシェーダーマテリアル
+const ParticleMaterial = shaderMaterial(
+	{ uScatter: 0, uTexture: new THREE.Texture() },
+	`
+    attribute vec3 initialPosition;
+    attribute vec3 randomOffset;
+    attribute vec2 uv;
+    varying vec2 vUv;
+    void main() {
+      vUv = uv;
+      vec3 newPosition = initialPosition + uScatter * randomOffset;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
+      gl_PointSize = 2.0 + uScatter * 10.0;
+    }
+  `,
+	`
+    uniform sampler2D uTexture;
+    varying vec2 vUv;
+    void main() {
+      vec4 texColor = texture2D(uTexture, vUv);
+      if (texColor.a < 0.1) discard;
+      gl_FragColor = texColor;
+    }
+  `
+);
+
+extend({ ParticleMaterial });
+
+interface ParticlesProps {
+	materialRef: React.MutableRefObject<any>;
+	texture: THREE.Texture;
+}
+
+const Particles: React.FC<ParticlesProps> = ({ materialRef, texture }) => {
+	const numX = 200;
+	const numY = 200;
+	const count = numX * numY;
+	const positions = new Float32Array(count * 3);
+	const initialPositions = new Float32Array(count * 3);
+	const randomOffsets = new Float32Array(count * 3);
+	const uvs = new Float32Array(count * 2);
+
+	let i = 0;
+	let j = 0;
+	for (let y = 0; y < numY; y++) {
+		for (let x = 0; x < numX; x++) {
+			const u = x / (numX - 1);
+			const v = y / (numY - 1);
+			const posX = (u - 0.5) * 20;
+			const posY = (v - 0.5) * 20;
+
+			positions[i] = posX;
+			positions[i + 1] = posY;
+			positions[i + 2] = 0;
+
+			initialPositions[i] = posX;
+			initialPositions[i + 1] = posY;
+			initialPositions[i + 2] = 0;
+
+			randomOffsets[i] = (Math.random() - 0.5) * 10;
+			randomOffsets[i + 1] = (Math.random() - 0.5) * 10;
+			randomOffsets[i + 2] = (Math.random() - 0.5) * 10;
+
+			uvs[j] = u;
+			uvs[j + 1] = v;
+			i += 3;
+			j += 2;
+		}
+	}
+
+	const geometry = new THREE.BufferGeometry();
+	geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+	geometry.setAttribute("initialPosition", new THREE.BufferAttribute(initialPositions, 3));
+	geometry.setAttribute("randomOffset", new THREE.BufferAttribute(randomOffsets, 3));
+	geometry.setAttribute("uv", new THREE.BufferAttribute(uvs, 2));
+
+	return (
+		<points geometry={geometry}>
+			<particleMaterial ref={materialRef} uScatter={0} uTexture={texture} />
+		</points>
+	);
+};
+
+const ParticleBackground: React.FC = () => {
+	const materialRef = useRef<any>(null);
+	const [texture, setTexture] = useState<THREE.Texture | null>(null);
+
+	useEffect(() => {
+		const loader = new THREE.TextureLoader();
+		loader.load(process.env.NEXT_PUBLIC_CLOUDFRONT_URL + "/bg.webp", (tex) => {
+			setTexture(tex);
+		});
+	}, []);
+
+	useEffect(() => {
+		ScrollTrigger.create({
+			trigger: document.body,
+			start: "top top",
+			end: "bottom bottom",
+			scrub: true,
+			onUpdate: (self) => {
+				if (materialRef.current) {
+					materialRef.current.uniforms.uScatter.value = self.progress * 10;
+				}
+			},
+		});
+	}, []);
+
+	return (
+		<div className="fixed inset-0 pointer-events-none">
+			<Canvas camera={{ position: [0, 0, 30] }}>
+				<ambientLight intensity={0.5} />
+				{texture && <Particles materialRef={materialRef} texture={texture} />}
+			</Canvas>
+		</div>
+	);
+};
+
+export default ParticleBackground;
+-e 
 ### FILE: ./components/GameCard.tsx
 
 import Image from "next/image";
@@ -526,21 +665,21 @@ export const games = [
 	{
 		title: "Counter-Strike 2",
 		description: "最も競技性の高いタイトル",
-		imageUrl: "/c1.png",
+		imageUrl:`${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/c1.webp`,
 	},
 	{
 		title: "Microsoft Flight Simulator",
 		description: "究極のフライトシム",
-		imageUrl: "/m1.png",
+		imageUrl:`${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/m1.webp`,
 	},
 	{
 		title: "Fortnite",
 		description: "史上最大のプレイヤー数を誇るバトルロイヤル",
-		imageUrl: "/f1.png",
+		imageUrl:`${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/f1.webp`,
 	},
 	{
 		title: "Gran Turismo 7",
 		description: "プロが認めるリアルドライビングシム",
-		imageUrl: "/g1.png",
+		imageUrl: `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/g1.webp`,
 	},
 ];

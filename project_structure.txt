@@ -3,7 +3,8 @@
 ├── components
 │   ├── GameCard.tsx
 │   ├── ImageModal.tsx
-│   └── InquiryModal.tsx
+│   ├── InquiryModal.tsx
+│   └── ParticleBackground.tsx
 ├── constants
 │   └── const.ts
 ├── eslint.config.mjs
@@ -28,4 +29,4 @@
 │       └── page.tsx
 └── tsconfig.json
 
-5 directories, 23 files
+5 directories, 24 files

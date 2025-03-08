@@ -6,7 +6,9 @@ import GameCard, { GameInfo } from '../../components/GameCard';
 import ImageModal from '../../components/ImageModal';
 import InquiryModal from "../../components/InquiryModal";
 import { TEXT_STYLES, gameInfos, games } from '../../constants/const';
-
+import BackgroundAnimation from '../../components/BackgroundAnimation';
+import ParticleBackground from '../../components/ParticleBackground';
+import SimpleBackgroundAnimation from '../../components/SimpleBackgroundAnimation';
 export default function Home() {
 	const [selectedGame, setSelectedGame] = useState<GameInfo | null>(null);
 	const [modalOpen, setModalOpen] = useState(false);
@@ -30,19 +32,9 @@ export default function Home() {
 					content="専門のプロによるゲーミング＆配信環境構築サポート。快適なプレイ環境を実現します。"
 				/>
 			</Head>
+			<ParticleBackground/>
 			<div className="bg-white text-gray-800 font-sans min-h-screen">
 				<main className="mx-full">
-					<div className="fixed top-0 left-0 h-screen w-full overflow-hidden bg-black">
-						<div className="absolute top-0 left-0 w-full h-full -z-10">
-							<Image
-								src={`${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/bg.webp`}
-								alt="背景画像"
-								fill
-								style={{ objectFit: "cover" }}
-								priority
-							/>
-						</div>
-					</div>
 					<div className="relative flex w-1/2 h-screen items-center justify-center text-center text-white bg-black">
 						<div className="text-left w-3/4">
 							<h1 className={TEXT_STYLES.sectionTitle}>加速する自由</h1>
